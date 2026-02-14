@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Niche Starters & History</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f8f9fa;
+            text-align: center;
+            padding: 20px;
+        }
+        #display-area {
+            min-height: 120px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #212529;
+            margin: 40px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            max-width: 500px;
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 20px;
+        }
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        .btn-main {
+            background-color: #007bff;
+            color: white;
+            box-shadow: 0 4px 0 #0056b3;
+        }
+        .btn-main:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 #0056b3;
+        }
+        .btn-clear {
+            background-color: #6c757d;
+            color: white;
+            font-size: 0.8rem;
+        }
+        #history-container {
+            width: 100%;
+            max-width: 500px;
+            text-align: left;
+        }
+        h3 {
+            color: #adb5bd;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 5px;
+        }
+        .history-item {
+            background: white;
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            color: #495057;
+            border-left: 4px solid #007bff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="display-area">rando site</div>
+
+    <div class="controls">
+        <button class="btn-main" onclick="getRandomStarter()">Get New Starter</button>
+        <button class="btn-clear" onclick="clearHistory()">Clear History</button>
+    </div>
+
+    <div id="history-container">
+        <h3>History</h3>
+        <div id="history-list"></div>
+    </div>
+
+    <script>
+        const starters = [
+            "When you're in the shower, do you wipe or clap your cheeks with water?",
+            "When you draw a zigzag, which part do you think is the zig, and which part is the zag?",
+            "If I was a white boy, what would my name be?",
+            "Do you shop for groceries by the list or the way the store is arranged?",
+            "Do you think lollipops or ice pops are more lickable?",
+            "Would you be red, yellow, green, or blue? Or would you show off your natural hue? Flamingo.",
+            "If you had to shave a random spot on your head right now, what spot would you pick?",
+            "How long would we need to be together for you to put me in your will, and if so, would you let me plan your funeral and make your casket neon green?",
+            "Can I make your casket neon green?",
+            "If you were a unicorn, would you fart glitter or sprinkles?",
+            "When you think of the rainbow, do you think of it as a color spectrum or a color wheel?",
+            "How much has your parents' neglect affected you on a scale of 1 to 10?",
+            "At what age did you learn to raise one eyebrow?",
+            "What would you say are your red flags? What would you say are your green flags? Yellow flags? Blue flags? Purple nurple flags?",
+            "Do you think turquoise is closer to blue or green?",
+            "What is the biggest word you can think of off the top of your head?",
+            "Are you the type of person that still likes to pick and eat their boogers?",
+            "Do you more closely relate to oil paint or acrylic paint?",
+            "What are your top five comfort YouTubers?",
+            "Do you mostly eat food for the texture or the taste?",
+            "If I was a piece of clothing, would you fold or hang me, and if I was wrinkly, would you use a traditional or steam iron?",
+            "Would you still love me if I was 13 years old? 12? 11? 10? 9?",
+            "If we were monkeys, would you eat the bugs out of my hair for me?",
+            "Would you rather be forced to be homeschooled in Wyoming, or Mormon private school in Utah?",
+            "Would you prefer to have more or less than 10 fingers on your hands?",
+            "Did you use to pronounce the P in pterodactyl?",
+            "What is a unique shape you wish they taught in school?",
+            "What are your top five most underrated named bodies of water?",
+            "What are the most creative names you've given your no-no-square parts?",
+            "If you were forced to live in a third world country for the rest of your life, which one would you choose?",
+            "Are you more of a snorter and swallower or are you more of a tissue dripper?",
+            "Are you vaccinated? I'm not. Ha ha.",
+            "What is the most goated container to vomit in?",
+            "When you're sick, are you hyperproductive like a mom or a lazy chud like a dad?",
+            "How many vaccines would you be able to take before you started mutating?",
+            "Does being sick make you sleep all day or not sleep at all?",
+            "Do you more frequently get stomach bugs or fevers?",
+            "What is the longest sleep streak you've ever had for a sickness?",
+            "Have you ever blown your nose so hard that you temporarily lose hearing in an ear?",
+            "What are your top three most goated flavors of kids' liquid medicine?",
+            "If you were a baby, would you say goo goo or gaga more often?",
+            "What would your first hallucination be if you were schizophrenic?",
+            "When describing life after death, do you think of it as more literal or metaphorical?",
+            "What is the worst pimple you've ever experienced?",
+            "How many times would you probably blink in one minute?",
+            "If we had fifteen kids, but they all had to be the same gender, would you pick girl, boy, or something in between?",
+            "Do you think there's more ways to cook an egg or a potato?",
+            "What age did you stop counting on your fingers?",
+            "Would you rather wear rose gold jewelry or that weird oil spill jewelry for the rest of your life?",
+            "If you could pick any word to make into a cuss word right now, what word would you choose?",
+            "Do you typically dream in first or third person?",
+            "What controversial historical figure would be most proud of you right now?",
+            "If you were a dessert, would you put Cool Whip or whipped cream on top of yourself?",
+            "Do you ever wonder if we're pooping at the same time?",
+            "How often do you clip your toenails?",
+            "Would you still find me attractive if I shaved off my eyebrows?",
+            "Is she or is she not gon call me baby boo?",
+            "Do you describe car horns as going honk honk or beep beep?",
+            "How much hair do you think would be on my head if I was a four-month-old baby?",
+            "Do you prefer aerosol cans or spray bottles?",
+            "If you were an Instagram Reel, what kind of Reel would you be?",
+            "Whenever you get an iced drink and the ice melts, do you still drink it or throw it away?",
+            "What's something illegal you wish you could do right now?",
+            "Do you wear glasses in your dreams?",
+            "Would you rather have permanent diarrhea or permanent constipation?",
+            "If I was a worm, would you use me as fish bait or fertilizer?",
+            "How much has alcoholism affected your family, on a scale of 1 to 10?",
+            "At what age did you learn to tie your shoelaces?",
+            "Would you rather have cake without the icing or icing without the cake?",
+            "Are you one of the people that used to throw microwaved honey buns at homeless people because it was a trend?",
+            "Do you moisturize daily?",
+            "If I was a slab of wood, would you craft me into a chair or a table?",
+            "How often do you recycle your own jokes?",
+            "What is your favorite form of potato?",
+            "What is the longest you've ever had your Christmas lights up for?",
+            "Do you think the Twin Towers were more like siblings or dating?",
+            "What do you think each letter of the alphabet tastes like? Smells like?",
+            "If you were 6'7\", would you be mostly torso or legs?",
+            "What season of the year do you think tastes the best?",
+            "How would you feel if you suddenly became intersex right now?",
+            "What do you think is the gayest piece of infrastructure?",
+            "If you had to drink one whole bottle of any bodily fluid, what would you pick?",
+            "If you built a roller coaster, how many loops would you put in it?",
+            "Were you a victim of buying an air fryer during the pandemic?",
+            "If you had a washer and dryer, would you rather have them side to side or stacked?",
+            "Do you think you mostly relate to wavelengths or particles?",
+            "What is your moral stance when it comes to pollution related to fireworks?",
+            "If you were a type of crayon, what kind of crayon would you be?",
+            "What is your favorite brand of refrigerator?",
+            "Was your mom or your dad more emotionally absent in your life?",
+            "If you were forced to get one cosmetic procedure, what would you do?",
+            "How many therapy sessions would you be willing to pay for to become normal?",
+            "If you can make any inanimate object a food, what object would you choose?",
+            "Did you by chance eat dirt as a kid?",
+            "What kind of person do you think you would be if your parents were on the opposite end of the political spectrum?",
+            "What color do you think your teeth would be if they weren't white?",
+            "What kind of flooring do you think represents your personality best?"
+        ];
+
+        function getRandomStarter() {
+            const randomIndex = Math.floor(Math.random() * starters.length);
+            const selection = starters[randomIndex];
+            
+            // Display the selection
+            document.getElementById('display-area').innerText = selection;
+
+            // Add to history
+            const historyList = document.getElementById('history-list');
+            const newItem = document.createElement('div');
+            newItem.className = 'history-item';
+            newItem.innerText = selection;
+            
+            // Insert at the top of the list
+            historyList.insertBefore(newItem, historyList.firstChild);
+        }
+
+        function clearHistory() {
+            document.getElementById('history-list').innerHTML = '';
+            document.getElementById('display-area').innerText = 'Ready for a niche starter?';
+        }
+    </script>
+</body>
+</html>
